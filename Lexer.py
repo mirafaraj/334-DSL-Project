@@ -96,32 +96,6 @@ def tokenize(code):
 
     return tokens
 
-def main():
-    if len(sys.argv) != 2: #assuming you run the program from the cmd line, sys.argv is a list of everything you typed there
-        print("Usage: python lexer.py <source_file>")#sys.argv[0] is always the script name, while sysargv[1] is always the src file
-        #so total length should be exactly 2, otherwise it's a wrong input -> tell the user how to run the program in an error msg
-        sys.exit(1)#1=program ended with error, 0=no error
-
-    filename = sys.argv[1]
-
-    try:
-        with open(filename, "r", encoding="utf-8") as f:
-            code = f.read() #this is to denote the whole code in the file by "code" in this file
-    except FileNotFoundError:
-        print(f"Error: file '{filename}' not found.")
-        sys.exit(1)
-
-    try:
-        tokens = tokenize(code)
-    except SyntaxError as e:
-        print("Lexical error:", e)
-        sys.exit(1)
-
-    for token in tokens: #prints token type and value while padding them both to 15 chars wide to make it neat and easily readable
-        print(f"{token.type:<15} {token.value:<15} (line {token.line}, col {token.column})")
-
-if __name__ == "__main__":
-    main()
 
 #every python file has a built-in variable called __name__ and it depends on how the file is being used. 
 #initially, __name__ is "__main__" by defualt. 
