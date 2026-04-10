@@ -3,7 +3,6 @@ import sys #to read command-line arguments
 from collections import namedtuple #creates a lightweight object for tokens
 
 Token = namedtuple("Token", ["type", "value", "line", "column"])
-
 TOKEN_SPECIFICATION = [
     # Keywords
     ("KEYWORD", r"\b(agent|tool|task|action|system|run|if|for|in|string|int|bool|list)\b"),
@@ -78,8 +77,22 @@ def tokenize(code):
                 f"Unexpected character {value!r} at line {line_num}, column {column}"
             )
 
+        if kind == "KEYWORD":
+            token_kind = value
+        elif kind == "ARROW":
+            token_kind = "->"
+        elif kind == "OPERATORS":
+            token_kind = value
+        elif kind == "DELIMITER":
+            token_kind = value
+        else:
+            token_kind = kind
+
         #else: add the token to the tokens array if it did match and we reached this part of the code
-        tokens.append(Token(kind, value, line_num, column))
+        tokens.append(Token(token_kind, value, line_num, column))
+
+    #Add end marker token for the LL(1) parser
+    tokens.append(Token("$", "$", line_num, 1))
 
     return tokens
 
