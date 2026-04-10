@@ -21,19 +21,19 @@ TOKEN_SPECIFICATION = [
     ("ARROW", r"->"),
 
     #Operators
-    ("OPERATORS", r"\+|-|=|<|>|<=|>=|!=|==|\*|/"),
+    ("OPERATORS", r"\+|-|==|<=|>=|<|>|=|\*|/"),
 
     #Delimiters
     ("DELIMITER", r"\(|\)|\{|\}|\[|\]|,|\.|:"),
 
     #Comments
-    ("COMMENT", r"//.*|#.*")
+    ("COMMENT", r"//.*|#.*"),
 
     #Whitespace
     ("WHITESPACE", r"[ \t\r\n]+"),
 
     #any other character
-    ("MISTMATCH", r".")
+    ("MISMATCH", r".")
 ]
 
 token_regex = re.compile("|".join(f"(?P<{name}>{pattern})" for name, pattern in TOKEN_SPECIFICATION))
@@ -43,6 +43,7 @@ def tokenize(code):
     line_num = 1 #tracks which line we're currently at
     line_start = 0 #tells me at which character position my current line begins at since the source code given is one single long string
 
+
     #finditer():
     # starts at position 0
     # applies the regex
@@ -51,9 +52,9 @@ def tokenize(code):
     # repeats until EOF
 
     for match in token_regex.finditer(code): #iterates over every token match from left to right
-        # lastgroup	What kind of token is this? example: "KEYWORD"
-        # group()	What text was matched? ex: "agent"
-        # start()	Where did it occur?(which column in the line?)
+        # lastgroup What kind of token is this? example: "KEYWORD"
+        # group()   What text was matched? ex: "agent"
+        # start()   Where did it occur?(which column in the line?)
         kind = match.lastgroup
         value = match.group() 
         column = match.start() - line_start + 1 #match.start() gives the absolute character position in the whole string, so subtracting line_start 
@@ -82,7 +83,6 @@ def tokenize(code):
 
     return tokens
 
-
 def main():
     if len(sys.argv) != 2: #assuming you run the program from the cmd line, sys.argv is a list of everything you typed there
         print("Usage: python lexer.py <source_file>")#sys.argv[0] is always the script name, while sysargv[1] is always the src file
@@ -106,7 +106,6 @@ def main():
 
     for token in tokens: #prints token type and value while padding them both to 15 chars wide to make it neat and easily readable
         print(f"{token.type:<15} {token.value:<15} (line {token.line}, col {token.column})")
-
 
 if __name__ == "__main__":
     main()
