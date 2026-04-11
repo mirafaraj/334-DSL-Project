@@ -95,10 +95,3 @@ def tokenize(code):
     tokens.append(Token("$", "$", line_num, 1))
 
     return tokens
-
-
-#every python file has a built-in variable called __name__ and it depends on how the file is being used. 
-#initially, __name__ is "__main__" by defualt. 
-#if you're tryign to run the program form the file itself then __name__=="__main__"
-#but if you import this file to another one then __name__=filename now so it's !="__main__"
-#so main won't run here on its own if u try to run the program, unless u run the lexer file directly form the prompt
