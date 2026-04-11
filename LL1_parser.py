@@ -29,7 +29,7 @@ class LL1Parser:
         # Index to track current token in input
         index = 0
 
-        # Parsing loop
+  
         while True:
             # Get top of the stack
             top = stack[-1]
@@ -40,39 +40,33 @@ class LL1Parser:
             # Lookahead is the token type (used for table lookup)
             lookahead = current.type
 
-            # =========================
-            # ACCEPT CONDITION
-            # =========================
+            
             # If both stack and input reach end marker, parsing is successful
             if top == "$" and lookahead == "$":
                 return True, "Parsing completed successfully."
 
-            # =========================
-            # TERMINAL CASE
-            # =========================
+            
             # If top of stack is a terminal
             if top not in self.non_terminals:
 
-                # If it matches the current token → consume it
+                # If it matches the current token -> consume it
                 if top == lookahead:
                     stack.pop()       # Remove terminal from stack
                     index += 1        # Move to next input token
 
-                # Otherwise → syntax error
+                # Otherwise -> syntax error
                 else:
                     return False, (
                         f"Syntax error at line {current.line}, column {current.column}: "
                         f"expected '{top}', found '{lookahead}'"
                     )
 
-            # =========================
-            # NON-TERMINAL CASE
-            # =========================
+            # If top of the stack is a non-terminal
             else:
                 # Form key using (non-terminal, lookahead)
                 key = (top, lookahead)
 
-                # If no rule exists in parsing table → error
+                # If no rule exists in parsing table -> error
                 if key not in self.parsing_table:
                     return False, (
                         f"Syntax error at line {current.line}, column {current.column}: "

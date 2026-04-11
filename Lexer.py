@@ -1,5 +1,4 @@
 import re #Python's regular expression engine (the heart of the lexer)
-import sys #to read command-line arguments
 from collections import namedtuple #creates a lightweight object for tokens
 
 Token = namedtuple("Token", ["type", "value", "line", "column"])
